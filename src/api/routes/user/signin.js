@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-router.post("/", (req, res) => {
-  const { id, name } = req.body;
+router.get("/", (req, res) => {
+  res.send('USER SIGNIN');
 });
 
 module.exports = router;
