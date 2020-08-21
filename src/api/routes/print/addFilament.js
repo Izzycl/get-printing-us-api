@@ -1,7 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const FilamentType = require("../../model/ModelFilamentType.js");
+//importacion de clase
+const ModelFilamentType = require("../../model/ModelFilamentType.js");
 
-router.post("/", (req, res) => {});
+router.post("/", (req, res) => {
+    const FilamentNew = new ModelFilamentType(req.body);
+     //Guardar un Document Filament
+    FilamentNew.save((err, info) => {
+    if (err) return res.send(err);
+    res.send(info);
+  });   
+});
+
+
+
+
 
 module.exports = router;

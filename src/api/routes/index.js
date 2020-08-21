@@ -7,7 +7,7 @@ const signup = require("./user/signup");
 
 //Importacion de rutas print
 const addPrint = require("./print/addPrint");
-const addFilament = require("./print/addPrint");
+const addFilament = require("./print/addFilament");
 //Fin last
 
 //Llamada de rutas de usuario
