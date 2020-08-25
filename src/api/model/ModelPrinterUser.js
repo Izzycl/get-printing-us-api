@@ -1,7 +1,9 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { ObjectID } = require('mongodb');
+const mongoose = require('mongoose');
 
-const ModelPrinterUser = new Schema({
+const { Schema } = mongoose;
+
+const printerUser = new Schema({
   email: {
     type: String,
     required: true
@@ -24,14 +26,24 @@ const ModelPrinterUser = new Schema({
   },
   profilePhoto: {
     type: String,
-    required: false
+    required: false,
+    default: null
   },
   isVerified: {
     type: Boolean,
     required: true,
     default: false
   },
-  modelOfPrinter: {}
+  modelOfPrinter: [
+    {
+      _id: false,
+      refPrinter: {
+        ref: 'print',
+        type: ObjectID,
+        _id: false
+      }
+    }
+  ]
 });
 
-module.exports = mongoose.model("ModelPrinterUser", ModelPrinterUser);
+module.exports = mongoose.model('printerUser', printerUser);

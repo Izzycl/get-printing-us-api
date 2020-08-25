@@ -1,12 +1,16 @@
-const { ObjectID } = require("mongodb");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-const ModelFilamentType = new Schema({
-  filamentName: {
-    type: String,
-    require: true
+const filamentType = new Schema(
+  {
+    filamentName: {
+      type: String,
+      require: true
+    }
+  },
+  {
+    timestamps: true
   }
-});
+);
 
-module.exports = mongoose.model("ModelFilamentType", ModelFilamentType);
+module.exports = mongoose.model('filamentType', filamentType);

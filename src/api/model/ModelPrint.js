@@ -1,39 +1,45 @@
-const { ObjectID } = require("mongodb");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { ObjectID } = require('mongodb');
+const mongoose = require('mongoose');
 
-const ModelPrint = new Schema({
-  brand: {
-    type: String,
-    required: true
-  },
-  model: {
-    type: String,
-    required: true
-  },
-  volumetricMaxSize: {
-    height: {
-      type: Number
+const { Schema } = mongoose;
+
+const print = new Schema(
+  {
+    brand: {
+      type: String,
+      required: true
     },
-    width: {
-      type: Number
+    model: {
+      type: String,
+      required: true
     },
-    depth: {
-      type: Number
-    }
-  },
-  img_url: {
-    type: String,
-    require: true
-  },
-  filamentType: [
-    {
-      refFilamentType: {
-        ref: "ModelFilamentType",
-        type: ObjectID
+    volumetricMaxSize: {
+      height: {
+        type: Number
+      },
+      width: {
+        type: Number
+      },
+      depth: {
+        type: Number
       }
-    }
-  ]
-});
+    },
+    img_url: {
+      type: String,
+      require: true
+    },
+    filamentType: [
+      {
+        refFilamentType: {
+          ref: 'filamentType',
+          type: ObjectID
+        }
+      }
+    ]
+  },
+  {
+    timestamps: true
+  }
+);
 
-module.exports = mongoose.model("ModelPrint", ModelPrint);
+module.exports = mongoose.model('print', print);
