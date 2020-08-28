@@ -8,7 +8,6 @@ module.exports = Joi.object({
   //   'string.max': `"Nombre de usuario" debe ser igual o menor a {#limit} caracteres`,
   //   'any.required': `"Nombre de usuario" es requerido`
   // })
-
   email: Joi.string().email().required().messages({
     'string.email': `debe ingresar un email corrrecto`,
     'string.base': `"email" debe ser del tipo texto`,
@@ -30,16 +29,32 @@ module.exports = Joi.object({
     'string.base': `"Contrasena" debe ser texto`,
     'any.required': `"Contrasena" es requerido`
   }),
-  modelOfPrinter: Joi.array()
-    .required()
-    .items(
-      Joi.object({
-        refPrinter: Joi.string().required().messages({
-          'string.base': 'el modelo debe referenciar un id'
-        })
-      }).messages({
-        'array.base': `"El model de impresora", `,
-        'any.required': `"El model de impresora", es requeridos`
+  modelsOfPrinters: Joi.array().items(
+    Joi.object({
+      refPrint: Joi.string().required().messages({
+        'string.base': 'el modelo debe referenciar un id'
       })
-    )
+    }).messages({
+      'array.base': `"El model de impresora", `,
+      'any.required': `"El model de impresora", es requeridos`
+    })
+  ),
+  phoneNumber: Joi.number().messages({
+    'number.base': `Debe ingresar un numero valido`
+  }),
+  dni_url: Joi.object({
+    img1: Joi.string().messages({
+      'string.base': 'debe ingresar un img valida.'
+    }),
+    img2: Joi.string().messages({
+      'string.base': 'debe ingresar un img valida.'
+    })
+  }),
+  profileImgUrl: Joi.string().messages({
+    'string.base': 'Debe ingresar una img valida'
+  }),
+  userType: Joi.string().required().messages({
+    'string.base': 'El tipo de usuario debe ser texto plano',
+    'any.required': 'Tipo de usuario requerido'
+  })
 });

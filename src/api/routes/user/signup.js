@@ -4,12 +4,10 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
 const bcrypt = require('bcrypt');
-const ModelPrinterUser = require('../../model/ModelPrinterUser');
-const ModelNormalUser = require('../../model/ModelNormalUser');
+const ModelUser = require('../../model/ModelUser');
 
 // Importacion de archivos de validacion
-const vSignUpNormalUser = require('../../helpers/validations/vSignUpNormalUser');
-
+const vSignUpNormal = require('../../helpers/validations/vSignUpUser');
 // Importacion end
 
 //Configuraciones para enviar email de confirmacion de cuenta
@@ -37,31 +35,31 @@ transporter.use('compile', hbs(handlebarOptions));
 
 //En Configuraciones
 
-router.post('/printer', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   /*
     Esta ruta es el registro para usuarios printers. 
     @params "data" tiene la respueda del esquema validor, 
      posible error || los valores
     
   */
-  const data = vSignUpNormalUser.validate(req.body);
+  const data = vSignUpNormal.validate(req.body);
   if (data.error) return res.status(500).send(data.error);
-  const newUser = data.value;
-  const emailexits = await ModelPrinterUser.findOne({ email: newUser.email });
+  const userData = data.value;
+  const emailexits = await ModelUser.findOne({ email: userData.email });
   //Envio de error si el email ingresado existe.
   if (emailexits) return res.status(400).send({ message: 'El email ya esta registrado.' });
   //Encriptacion de la password.
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
-  newUser.password = hashPassword;
+  userData.password = hashPassword;
   //Fin encriptado de password
   //Paso de variables a schema de mongo
-  const newPrinterUser = new ModelPrinterUser(data.value);
+  const newUser = new ModelUser(userData);
   //Guardado de schema en mongo
-  newPrinterUser.save(err => {
+  newUser.save(err => {
     if (err) return res.status(400).send(err);
     //Creacion de token para posterior verificacion
-    const token = jwt.sign({ _id: newPrinterUser._id, email: newPrinterUser.email }, process.env.TOKEN_KEY);
+    const token = jwt.sign({ _id: newUser._id, email: newUser.email, type: 'printer' }, process.env.TOKEN_KEY);
     //Contructor de gestor para correo
     const emailOfConfirmationAccount = {
       from: process.env.GMAIL,
@@ -70,28 +68,34 @@ router.post('/printer', async (req, res, next) => {
       text: 'no-reply',
       template: 'email',
       context: {
-        firtName: newPrinterUser.firtName,
-        token: token,
-        url: 'user/signup/printer/validation'
+        firtName: newUser.firtName,
+        token: token
       }
     };
 
-    transporter.sendMail(emailOfConfirmationAccount, (err, info) => {
+    transporter.sendMail(emailOfConfirmationAccount, err => {
       if (err) return res.status(400).send({ message: err });
       res.status(200).send({ message: 'Tu cuenta se creo con exito, revisa tu correo para confimar.' });
     });
   });
 });
 
-router.post('/normal', (req, res) => {});
+router.post('/validation/:token', async (req, res, next) => {
+  try {
+    const data = jwt.verify(req.params.token, process.env.TOKEN_KEY);
+    await ModelUser.findOne({ email: data.email, _id: data._id }, (err, User) => {
+      if (err) return next(err);
 
-router.post('/printer/validation/:token', (req, res) => {
-  // Ruta para validar el registro de usuario printer por correo
-});
+      User.isVerified = true;
 
-router.post('/normal/validation/:token', (req, res) => {
-  // Ruta para validar el registro de usuario normales por correo
-  res.send('');
+      User.save(err => {
+        if (err) return next(err);
+        res.status(400).send({ message: 'Cuenta verificada' });
+      });
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
