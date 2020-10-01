@@ -7,11 +7,11 @@ const print = new Schema(
   {
     brand: {
       type: String,
-      required: true
+      required: false
     },
     model: {
       type: String,
-      required: true
+      required: false
     },
     volumetricMaxSize: {
       height: {
@@ -26,10 +26,11 @@ const print = new Schema(
     },
     img_url: {
       type: String,
-      require: true
+      require: false
     },
     filamentType: [
       {
+        _id: false,
         refFilamentType: {
           ref: 'filamentType',
           type: ObjectID

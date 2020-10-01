@@ -20,7 +20,7 @@ function errorHandler(err, req, res, next) {
 }
 
 function ensureAuthenticated(req, res, next) {
-  if (!req.get('Authorization')) return res.status(403).send({ message: 'Acceso restrigido, provea un token valido' });
+  if (!req.get('Authorization')) return res.status(401).send({ message: 'Acceso restrigido, provea un token valido' });
   const token = req.get('Authorization');
   jwt.verify(token, process.env.TOKEN_KEY, (err, decode) => {
     if (err) return next(err);

@@ -1,13 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-</head>
-<body>
-    <h1>Hola, {{firtName}}</h1>
-    <p>Para verificar tu cuenta <a href="http://localhost:8080/api/v1/user/signup/validation/{{token}}">click aqui</a></p>
-    
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <p class="header-sub-title">
+          <small>Correo de confirmación</small>
+        </p>
+        <hr />
+        <div class="content">
+          <h2 class="content-title">Bienvenido a Get Printing Us</h2>
+          <p class="content-text">
+            Hola {{firtName}}, gracias por registrarte, para completar el proceso de registro presiona el siguiente
+            botón
+          </p>
+          <div class="content-btn">
+            <a href="http://localhost:8080/api/v1/user/signup/{{token}}" target="_blank" class="btn">Verificar</a>
+          </div>
+        </div>
+        <hr />
+      </div>
+    </div>
+  </body>
+  <style lang="style">
+    body {
+      background-color: #e9e9e9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    }
+    .container{
+      height: 450px;
+      width: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    .header-sub-title{
+      padding: 10px 20px;
+      margin: 0px;
+      font-size: 13px;
+    }
+    hr{
+      border: 1px solid rgb(216, 216, 216);
+      margin: 0px auto 10px auto;
+      width: 560px;
+    }
+    .content-btn{
+      width: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+    .card {
+      background-color: white;
+      width: 600px;
+      height: auto;
+      -webkit-box-shadow: 2px 7px 15px -3px #6F6F6F;
+      box-shadow: 2px 7px 15px -3px #6F6F6F;
+    }
+    .content-title{
+      color: #002570;
+      padding: 10px 20px;
+      width: auto;
+      text-align: center;
+    }
+    .content{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .content-text {
+      padding: 10px 20px;
+      width: auto;
+      text-align: center;
+    }
+    .btn {
+      padding: 10px 20px;
+      width: 200px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      background-color:  #B90000;
+      margin-bottom: 10px;
+      border-radius: 20px;
+    }
+  </style>
 </html>

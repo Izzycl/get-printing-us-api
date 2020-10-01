@@ -7,18 +7,18 @@ const bcrypt = require('bcrypt');
 const ModelUser = require('../../model/ModelUser');
 
 // Importacion de archivos de validacion
-const vSignUpNormal = require('../../helpers/validations/vSignUpUser');
+const vSignUpUser = require('../../helpers/validations/vSignUpUser');
 // Importacion end
 
 //Configuraciones para enviar email de confirmacion de cuenta
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.mailgun.org',
+  port: '587',
   auth: {
-    user: process.env.GMAIL, //Asegurar que las varibles de entorno esten correctas
-    pass: process.env.PASS //Same here
+    user: 'postmaster@sandboxe4ceb9f484464134b8895da1e4c8d9e9.mailgun.org',
+    pass: '8ae8bfce34939b0316f04d82d8d36e15-0f472795-269fe0dc'
   }
 });
-
 //Configuraciones de plantillas para correo.
 const handlebarOptions = {
   viewEngine: {
@@ -42,7 +42,7 @@ router.post('/', async (req, res, next) => {
      posible error || los valores
     
   */
-  const data = vSignUpNormal.validate(req.body);
+  const data = vSignUpUser.validate(req.body);
   if (data.error) return res.status(500).send(data.error);
   const userData = data.value;
   const emailexits = await ModelUser.findOne({ email: userData.email });
@@ -62,7 +62,7 @@ router.post('/', async (req, res, next) => {
     const token = jwt.sign({ _id: newUser._id, email: newUser.email, type: 'printer' }, process.env.TOKEN_KEY);
     //Contructor de gestor para correo
     const emailOfConfirmationAccount = {
-      from: process.env.GMAIL,
+      from: 'no-reply@get-printing-us.com',
       to: 'diego_1197@hotmail.cl', //Correo Temporal donde llegan las confirmaciones, cambiar por propio
       subject: 'Bienvenido a Get Printing Us',
       text: 'no-reply',
@@ -81,21 +81,19 @@ router.post('/', async (req, res, next) => {
 });
 
 router.post('/validation/:token', async (req, res, next) => {
-  try {
-    const data = jwt.verify(req.params.token, process.env.TOKEN_KEY);
-    await ModelUser.findOne({ email: data.email, _id: data._id }, (err, User) => {
+  jwt.verify(req.params.token, process.env.TOKEN_KEY, (err, decode) => {
+    if (err) return next(err);
+    ModelUser.findOne({ email: decode.email, _id: decode._id }, (err, User) => {
       if (err) return next(err);
 
       User.isVerified = true;
 
       User.save(err => {
         if (err) return next(err);
-        res.status(400).send({ message: 'Cuenta verificada' });
+        res.status(200).send({ message: 'Cuenta verificada' });
       });
     });
-  } catch (error) {
-    next(error);
-  }
+  });
 });
 
 module.exports = router;

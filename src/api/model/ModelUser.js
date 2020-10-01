@@ -1,4 +1,3 @@
-const { string } = require('@hapi/joi');
 const { ObjectID } = require('mongodb');
 const mongoose = require('mongoose');
 
@@ -33,6 +32,7 @@ const user = new Schema(
     modelsOfPrinters: [
       {
         required: false,
+        _id: false,
         refPrint: {
           ref: 'print',
           type: ObjectID
@@ -56,6 +56,10 @@ const user = new Schema(
     profileImgUrl: {
       type: String,
       require: false
+    },
+    feedback: {
+      type: Number,
+      required: false
     }
   },
   {
