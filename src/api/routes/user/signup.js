@@ -12,11 +12,11 @@ const vSignUpUser = require('../../helpers/validations/vSignUpUser');
 
 //Configuraciones para enviar email de confirmacion de cuenta
 const transporter = nodemailer.createTransport({
-  host: 'smtp.mailgun.org',
-  port: '587',
+  host: process.env.EMAIL_HOST,
+  port: process.env.EMAIL_PORT,
   auth: {
-    user: 'postmaster@sandboxe4ceb9f484464134b8895da1e4c8d9e9.mailgun.org',
-    pass: '8ae8bfce34939b0316f04d82d8d36e15-0f472795-269fe0dc'
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 //Configuraciones de plantillas para correo.
