@@ -10,11 +10,16 @@ router.post('/', (req, res, next) => {
   if (data.error) return res.status(400).send(data.error);
   const { email, password } = data.value;
   ModelUser.findOne({ email: email }, (err, user) => {
+    if (!user.isVerified)
+      return res.status(400).send({ message: 'Verificación de cuenta necesaria, revise su correo. ' });
     if (err) return res.status(400).send({ message: 'Email o contraseña incorrectos.' });
+    if (!user) return res.status(400).send({ message: 'Email o contraseña incorrectos.' });
+
     bcrypt.compare(password, user.password, (err, same) => {
       if (!same) return res.status(400).send({ message: 'Email o contraseña incorrectos.' });
       const token = jwt.sign({ _id: user._id }, process.env.TOKEN_KEY);
-      res.header('auth-token', token).send({ token: token });
+      user.password = undefined;
+      res.header('auth-token', token).send({ token: token, user: user });
     });
   });
 });

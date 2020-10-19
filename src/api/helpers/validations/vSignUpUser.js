@@ -42,19 +42,14 @@ module.exports = Joi.object({
   phoneNumber: Joi.number().messages({
     'number.base': `Debe ingresar un numero valido`
   }),
-  dni_url: Joi.object({
-    img1: Joi.string().messages({
-      'string.base': 'debe ingresar un img valida.'
-    }),
-    img2: Joi.string().messages({
-      'string.base': 'debe ingresar un img valida.'
-    })
-  }),
   profileImgUrl: Joi.string().messages({
     'string.base': 'Debe ingresar una img valida'
   }),
   userType: Joi.string().required().messages({
     'string.base': 'El tipo de usuario debe ser texto plano',
     'any.required': 'Tipo de usuario requerido'
+  }),
+  isVerified: Joi.boolean().messages({
+    'boolean.base': 'Verificado debe ser booleano'
   })
 });

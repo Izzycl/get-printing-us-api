@@ -21,6 +21,10 @@ const user = new Schema(
       type: String,
       required: true
     },
+    isVerified: {
+      type: Boolean,
+      required: true
+    },
     password: {
       type: String,
       required: true
@@ -42,16 +46,6 @@ const user = new Schema(
     phoneNumber: {
       type: Number,
       required: false
-    },
-    dni_url: {
-      img1: {
-        type: String,
-        required: false
-      },
-      img2: {
-        type: String,
-        required: false
-      }
     },
     profileImgUrl: {
       type: String,

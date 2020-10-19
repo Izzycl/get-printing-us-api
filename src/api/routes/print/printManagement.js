@@ -18,4 +18,18 @@ router.get('/', (req, res, next) => {
   });
 });
 
+router.get('/custom', (req, res, next) => {
+  ModelPrint.find({ type: 'custom' }, (err, all) => {
+    if (err) return next(err);
+    res.status(200).send(all);
+  });
+});
+
+router.get('/original', (req, res, next) => {
+  ModelPrint.find({ type: 'original' }, (err, all) => {
+    if (err) return next(err);
+    res.status(200).send(all);
+  });
+});
+
 module.exports = router;

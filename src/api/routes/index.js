@@ -12,6 +12,8 @@ const printManagement = require('./print/printManagement');
 const filamentManagement = require('./print/filamentManagement');
 // Fin last
 
+//Importacion de router service
+const serviceManagement = require('./services/serviceManagement');
 //Importacion de middleware auth token
 const { ensureAuthenticated } = require('../../middlewares');
 
@@ -24,6 +26,9 @@ router.use('/user/signup', signup);
 router.use('/print/filament/', filamentManagement);
 router.use('/print/', printManagement);
 // Fin last
+
+//Ruta de servicios
+router.use('/service/', serviceManagement);
 
 //Ruta obtener usuario
 //

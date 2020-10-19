@@ -7,7 +7,6 @@ module.exports = Joi.object({
     'any.required': `"Email" es requerido`
   }),
   password: Joi.string().required().messages({
-    'string.base': `"Nombre" debe ser texto`,
-    'any.required': `"Nombre" es requerido`
+    'any.required': `"Password" es requerido`
   })
 });

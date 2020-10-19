@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
@@ -9,11 +10,10 @@ const ModelUser = require('../../model/ModelUser');
 // Importacion de archivos de validacion
 const vSignUpUser = require('../../helpers/validations/vSignUpUser');
 // Importacion end
-
 //Configuraciones para enviar email de confirmacion de cuenta
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
+  host: 'smtp.mailgun.org',
+  port: 25,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -63,7 +63,7 @@ router.post('/', async (req, res, next) => {
     //Contructor de gestor para correo
     const emailOfConfirmationAccount = {
       from: 'no-reply@get-printing-us.com',
-      to: 'diego_1197@hotmail.cl', //Correo Temporal donde llegan las confirmaciones, cambiar por propio
+      to: 'noobiieed@gmail.com', //Correo Temporal donde llegan las confirmaciones, cambiar por propio
       subject: 'Bienvenido a Get Printing Us',
       text: 'no-reply',
       template: 'email',
@@ -84,10 +84,11 @@ router.post('/validation/:token', async (req, res, next) => {
   jwt.verify(req.params.token, process.env.TOKEN_KEY, (err, decode) => {
     if (err) return next(err);
     ModelUser.findOne({ email: decode.email, _id: decode._id }, (err, User) => {
+      console.log(err);
       if (err) return next(err);
-
+      console.log(User);
+      if (User.isVerified) return res.status(400).send({ message: 'Esta cuenta ya esta verificada.' });
       User.isVerified = true;
-
       User.save(err => {
         if (err) return next(err);
         res.status(200).send({ message: 'Cuenta verificada' });

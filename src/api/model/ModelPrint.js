@@ -13,6 +13,10 @@ const print = new Schema(
       type: String,
       required: false
     },
+    type: {
+      type: String,
+      required: true
+    },
     volumetricMaxSize: {
       height: {
         type: Number
