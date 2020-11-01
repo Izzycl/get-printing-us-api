@@ -51,5 +51,9 @@ module.exports = Joi.object({
   }),
   isVerified: Joi.boolean().messages({
     'boolean.base': 'Verificado debe ser booleano'
+  }),
+  feedback: Joi.number().required().messages({
+    'number.base': `"Feedback" debe ser un numero`,
+    'any.required': '"Feedback" de usuario requerido'
   })
 });
