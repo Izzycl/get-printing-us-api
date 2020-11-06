@@ -35,12 +35,8 @@ const user = new Schema(
     },
     modelsOfPrinters: [
       {
-        required: false,
-        _id: false,
-        refPrint: {
-          ref: 'print',
-          type: ObjectID
-        }
+        ref: 'print',
+        type: ObjectID
       }
     ],
     phoneNumber: {

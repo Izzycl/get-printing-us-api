@@ -34,11 +34,8 @@ const print = new Schema(
     },
     filamentType: [
       {
-        _id: false,
-        refFilamentType: {
-          ref: 'filamentType',
-          type: ObjectID
-        }
+        ref: 'filamentType',
+        type: ObjectID
       }
     ]
   },

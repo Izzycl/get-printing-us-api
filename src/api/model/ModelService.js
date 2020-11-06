@@ -17,12 +17,10 @@ const service = new Schema(
       ref: 'print',
       type: ObjectID
     },
-    availableFilament: [
-      {
-        ref: 'filamentType',
-        type: ObjectID
-      }
-    ]
+    availableFilament: {
+      ref: 'filamentType',
+      type: ObjectID
+    }
   },
   {
     timestamps: true

@@ -29,16 +29,9 @@ module.exports = Joi.object({
     'string.base': `"Contrasena" debe ser texto`,
     'any.required': `"Contrasena" es requerido`
   }),
-  modelsOfPrinters: Joi.array().items(
-    Joi.object({
-      refPrint: Joi.string().required().messages({
-        'string.base': 'el modelo debe referenciar un id'
-      })
-    }).messages({
-      'array.base': `"El model de impresora", `,
-      'any.required': `"El model de impresora", es requeridos`
-    })
-  ),
+  modelsOfPrinters: Joi.array().required().messages({
+    'any.required': `"Impresora" es requerido`
+  }),
   phoneNumber: Joi.number().messages({
     'number.base': `Debe ingresar un numero valido`
   }),

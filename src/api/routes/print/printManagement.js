@@ -26,9 +26,20 @@ router.get('/custom', (req, res, next) => {
 });
 
 router.get('/original', (req, res, next) => {
-  ModelPrint.find({ type: 'original' }, (err, all) => {
+  ModelPrint.find({ type: 'original' })
+    .populate('filamentType', ['filamentName'])
+    .exec((err, doc) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).send(doc);
+    });
+});
+
+router.delete('/:id', (req, res, next) => {
+  if (!req.params.id) res.status(400).send({ message: 'Debe ingresar un id para eliminar' });
+  ModelPrint.deleteOne({ _id: req.params.id }, (err, result) => {
     if (err) return next(err);
-    res.status(200).send(all);
+    if (result.deletedCount === 0) return res.status(400).send({ message: `El registro a eliminar no existe` });
+    res.send({ message: `Se elimino ${result.deletedCount} registro` });
   });
 });
 

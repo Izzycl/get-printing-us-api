@@ -4,6 +4,7 @@ const router = express.Router();
 // Importacion de rutas para usuarios
 const signin = require('./user/signin');
 const signup = require('./user/signup');
+const contact = require('./user/contact');
 const getAllUsers = require('./user/getAllUsers');
 // Final de rutas usuarios
 
@@ -20,6 +21,7 @@ const { ensureAuthenticated } = require('../../middlewares');
 // Llamada de rutas de usuario
 router.use('/user/signin', signin);
 router.use('/user/signup', signup);
+router.use('/user/contact', contact);
 // Fin de llamadas
 
 // Rutas de info y acciones para impresoras.active
