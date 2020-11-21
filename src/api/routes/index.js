@@ -5,6 +5,7 @@ const router = express.Router();
 const signin = require('./user/signin');
 const signup = require('./user/signup');
 const contact = require('./user/contact');
+const changetoprint = require('./user/changetoprint');
 const getAllUsers = require('./user/getAllUsers');
 // Final de rutas usuarios
 
@@ -22,6 +23,7 @@ const { ensureAuthenticated } = require('../../middlewares');
 router.use('/user/signin', signin);
 router.use('/user/signup', signup);
 router.use('/user/contact', contact);
+router.use('/user/changetoprint', changetoprint);
 // Fin de llamadas
 
 // Rutas de info y acciones para impresoras.active

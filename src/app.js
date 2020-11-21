@@ -14,6 +14,7 @@ const middlewares = require('./middlewares');
 const api = require('./api/routes/index');
 
 const app = express();
+app.use('/uploads', express.static('uploads'));
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use(morgan('dev'));
