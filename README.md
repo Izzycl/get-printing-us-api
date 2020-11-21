@@ -1,21 +1,22 @@
-# Get Printing Us
+# Get Printing Us API
 
-## Setup
+## Setup a .env file before start
+
+Variables that the file must be have
+
+```
+PORT=
+TOKEN_KEY=
+DB_HOST=
+EMAIL_USER=
+EMAIL_PASS=
+
+```
+
+## Setup NPM
 
 ```
 npm install
-```
-
-## Lint
-
-```
-npm run lint
-```
-
-## Test
-
-```
-npm run test
 ```
 
 ## Development
@@ -23,3 +24,17 @@ npm run test
 ```
 npm run dev
 ```
+
+## Setup YARN
+
+```
+yarn install
+```
+
+## Development
+
+```
+yarn run dev
+```
+
+<small>this project was made with all my hate.</small>
