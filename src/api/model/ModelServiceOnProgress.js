@@ -39,6 +39,12 @@ const serviceOnProgress = new Schema(
         required: false
       }
     },
+    finalPrice: {
+      type: Number
+    },
+    nodiscPrice: {
+      type: Number
+    },
     courier: {
       trackingNumber: {
         type: String

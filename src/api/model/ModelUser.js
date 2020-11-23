@@ -50,6 +50,21 @@ const user = new Schema(
     feedback: {
       type: Number,
       required: false
+    },
+    reward: {
+      total: {
+        type: Number,
+        default: 0
+      },
+      ncuenta: {
+        type: Number
+      },
+      banco: {
+        type: String
+      },
+      cuenta: {
+        type: String
+      }
     }
   },
   {

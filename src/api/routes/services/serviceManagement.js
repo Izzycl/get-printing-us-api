@@ -3,9 +3,8 @@ const router = express.Router();
 const ModelService = require('../../model/ModelService');
 const ModelServiceOnProgress = require('../../model/ModelServiceOnProgress');
 const multer = require('multer');
-const { route } = require('../user/signin');
-const path = require('path');
-const { match } = require('assert');
+const ModelUser = require('../../model/ModelUser');
+const { modelName } = require('../../model/ModelServiceOnProgress');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
@@ -73,7 +72,8 @@ router.post('/contract', upload.single('fileToPrint'), (req, res, next) => {
     estimateHours: req.body.estimateHours,
     state: req.body.state,
     userRecruiter: req.body.userRecruiter,
-
+    nodiscPrice: req.body.noDisc,
+    finalPrice: req.body.finalPrice,
     payment: {
       paymentMethod: req.body.paymentMethod,
       transactionNumber: '_' + Math.random().toString(36).substr(2, 9),
@@ -116,6 +116,61 @@ router.get('/contract/all/:id', (req, res, next) => {
       });
       res.status(200).send(doc);
     });
+});
+
+router.get('/contract/all/service/all', (req, res, next) => {
+  ModelServiceOnProgress.find()
+    .populate({
+      path: 'service',
+      model: 'service',
+      populate: {
+        path: 'Print',
+        model: 'print',
+        select: ['filamentType', 'model'],
+        populate: {
+          path: 'filamentType',
+          model: 'filamentType',
+          select: ['filamentName']
+        }
+      }
+    })
+    .exec((err, doc) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).send(doc);
+    });
+});
+
+router.post('/contract/mod', (req, res, next) => {
+  ModelServiceOnProgress.findById(req.body.serviceid, (err, model) => {
+    if (err) return next(err);
+    model.state = 'delivery';
+    model.save(err => {
+      if (err) return next(err);
+    });
+  });
+  ModelUser.findById(req.body.serviceuserid, (err, model) => {
+    if (err) return next(err);
+    model.reward = {
+      total: model.reward.total + req.body.finalPrice
+    };
+    model.save(err => {
+      if (err) return next(err);
+      res.status(200).send({ message: 'okey' });
+    });
+  });
+});
+
+router.post('/cancel/:id', (req, res, next) => {
+  ModelUser.findById(req.params.id, (err, model) => {
+    if (err) return next(err);
+    model.reward = {
+      total: 0
+    };
+    model.save(err => {
+      if (err) return next(err);
+      res.status(200).send({ message: 'okey' });
+    });
+  });
 });
 
 module.exports = router;
