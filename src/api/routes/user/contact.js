@@ -27,9 +27,9 @@ router.post('/', (req, res, next) => {
   });
 });
 
-router.put('/:id', (req, res, next) => {
+router.put('/', (req, res, next) => {
   ModelContact.updateOne(
-    { _id: req.params.id },
+    { _id: req.body.id },
     { state: 'reply', reply: req.body.reply },
     { upsert: true },
     (err, doc) => {

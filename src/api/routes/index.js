@@ -18,7 +18,8 @@ const filamentManagement = require('./print/filamentManagement');
 const serviceManagement = require('./services/serviceManagement');
 //Importacion de middleware auth token
 const { ensureAuthenticated } = require('../../middlewares');
-
+const { route } = require('./user/getAllUsers');
+router.use('/user/all', getAllUsers);
 // Llamada de rutas de usuario
 router.use('/user/signin', signin);
 router.use('/user/signup', signup);
