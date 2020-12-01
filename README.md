@@ -1,5 +1,7 @@
 # Get Printing Us API
 
+### This is a thesis project.
+
 ## Setup a .env file before start
 
 Variables that the file must be have
